@@ -1,0 +1,83 @@
+<div [@routerTransition]>
+    <div class="content d-flex flex-column flex-column-fluid">
+        <sub-header [title]="'PhoneBook' | localize" [description]="'PhoneBookInfo' | localize" >
+            <div role="actions">
+                <button class="btn btn-primary" (click)="createPersonModal.show()"><i class="fa fa-plus"></i> {{"Create New Person" | localize}}</button>
+            </div>
+        </sub-header>
+    </div>
+
+    <div [class]="containerClass">
+        <div class="card card-custom gutter-b">
+            <div class="card-body">
+                <h2>{{l("All People")}}</h2>
+                <div class="input-group mb-5">
+                    <input type="text" class="form-control" name="filter" [(ngModel)]="filter">
+                    <div class="input-group-append" id="button-addon4">
+                      <button class="btn btn-outline-primary" type="button" (click)="getPeople()"><i class="fa fa-search"></i></button>
+                    </div>
+                  </div>
+                <div class="text-center" *ngIf="persons.length === 0">
+                    <h3>No data found</h3>
+                </div>
+                <div class="" *ngFor="let person of persons">
+                    <div class="row mb-2">
+                        <div class="col-sm-8">
+                            <h4>{{ person.name + " " + person.surname }}</h4>
+                            <span>{{ person.emailAddress }}</span>
+                        </div>
+                        <div class="col-sm-4">
+                            <button class="btn btn-primary mr-1" (click)="editPhone(person)"><i class="fa fa-plus"></i></button>
+                            <button class="btn btn-success mr-1" (click)="editPersonModal.show(person.id)"><i class="fa fa-edit"></i></button>
+                            <button class="btn btn-danger mr-1" (click)="deletePerson(person)"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="row" >
+                        <div class="col-sm-12" *ngIf="person===editingPerson">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <td colspan="1">Action</td>
+                                        <td colspan="2">Type</td>
+                                        <td colspan="2">Number</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let phones of person.phones">
+                                        <td>
+                                            <button class="btn btn-danger mr-1" (click)="deletePhone(phones, person)"><i class="fa fa-times"></i></button>
+                                        </td>
+                                        <td colspan="2">
+                                            {{ getPhoneTypeAsString(phones.type) }}
+                                        </td>
+                                        <td colspan="4">
+                                            {{ phones.number }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <button class="btn btn-success mr-1" (click)="savePhone()"><i class="fa fa-plus"></i></button>
+                                        </td>
+                                        <td colspan="2">
+                                            <select name="Type" [(ngModel)]="newPhone.type">
+                                                <option value="0">Mobile</option>
+                                                <option value="1">Home</option>
+                                                <option value="2">Business</option>
+                                            </select>
+                                        </td>
+                                        <td colspan="4">
+                                            <input type="text" class="form-control" name="number" [(ngModel)]="newPhone.number" required>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <createPersonModal #createPersonModal (modalSave)="getPeople()"></createPersonModal>
+    <editPersonModal #editPersonModal (modalSave)="getPeople()"></editPersonModal>
+</div>
+

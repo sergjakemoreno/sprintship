@@ -1,0 +1,35 @@
+<div appBsModal #editPersonModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditPersonModal"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #personForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="new-password">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <h4 class="modal-title pull-left">{{l("Create New Person")}}</h4>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')" [disabled]="saving">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="txtFirstName">Name</label>
+                        <input type="text" class="form-control" id="txtFirstName" name="name" [(ngModel)]="person.name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtSurname">Surname</label>
+                        <input type="text" class="form-control" id="txtSurname" name="surname" [(ngModel)]="person.surname" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtEmailAddress">Email address</label>
+                        <input type="email" class="form-control" id="txtEmailAddress" name="emailAddress" [(ngModel)]="person.emailAddress" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-light-primary font-weight-bold" (click)="close()">{{"Cancel" | localize}}</button>
+                    <button type="submit" class="btn btn-primary font-weight-bold" [disabled]="!personForm.form.valid" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{"Save" | localize}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
